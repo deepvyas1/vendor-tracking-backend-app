@@ -1,0 +1,18 @@
+{
+    "type": {
+        "values": [
+            "veg",
+            "non-veg"
+        ],
+        "veg": "veg",
+        "non-veg": "non-veg"
+    },
+    "status": {
+        "values": [
+            "active",
+            "deleted"
+        ],
+        "active": "active",
+        "deleted": "deleted"
+    }
+}

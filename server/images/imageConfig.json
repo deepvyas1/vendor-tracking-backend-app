@@ -1,0 +1,26 @@
+{
+    "imageMimeType": {
+        "values": [
+          "image/jpeg",
+          "image/png",
+          "image/svg+xml",
+          "image/gif"
+        ]
+      },
+      "extensions": {
+        "values": [
+          ".jpg",
+          ".jpeg",
+          ".png",
+          ".gif",
+          ".svg"
+        ]
+      },
+      "status": {
+          "values": [
+              "active",
+              "deleted"
+          ],
+          "active": "active"
+      }
+}

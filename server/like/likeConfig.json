@@ -1,0 +1,26 @@
+{
+    "flow": {
+        "values": [
+            "dish",
+            "vendor"
+        ],
+        "dish": "dish",
+        "vendor": "vendor"
+    },
+    "reaction": {
+        "values": [
+            "like",
+            "dislike"
+        ],
+        "like": "like",
+        "dislike": "dislike"
+    },
+    "status": {
+        "values": [
+            "active",
+            "deleted"
+        ],
+        "active": "active",
+        "deleted": "deleted"
+    }
+}

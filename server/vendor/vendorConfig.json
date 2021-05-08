@@ -1,0 +1,26 @@
+{
+    "type": {
+        "values": [
+            "restaurant",
+            "mobileVendor"
+        ],
+        "restaurant": "restaurant",
+        "mobileVendor": "mobileVendor"
+    },
+    "vendorStatus": {
+        "values": [
+            "open",
+            "closed"
+        ],
+        "closed": "closed",
+        "open": "open"
+    },
+    "status": {
+        "values": [
+            "active",
+            "deleted"
+        ],
+        "active": "active",
+        "deleted": "deleted"
+    }
+}
