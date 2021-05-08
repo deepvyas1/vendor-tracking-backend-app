@@ -11,7 +11,7 @@ const isValidImage = require("./utils/middlewares").isValidImage;
 
 module.exports = function(app) {
 
-    app.use("/v1/api/user/account", [isJWTAuthenticatedMW], userRoute);
+    app.use("/v1/api/user/account",  userRoute);
 
     app.use("/v1/api/user/vendor", [isJWTAuthenticatedMW], vendorRoute);
 
