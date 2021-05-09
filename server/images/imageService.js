@@ -29,7 +29,7 @@ module.exports = {
             let insertObject, awsS3Object;
 
             // Calling API to upload image on S3 Bucket
-            awsService.callSingleImageUpload(file, async (err, data) => {console.log("data",data);
+            awsService.callSingleImageUpload(file, async (err, data) => {
                 if (err) {
                     // If there was some error in uploading the image to S3
                     response = new responseMessage.GenericFailureMessage();
@@ -60,24 +60,20 @@ module.exports = {
                         width: dimensions.width,
                         imageInfo: awsS3Object
                     };
-                    PROMISE.props({
-                        insertImageDetail: Image.create(insertObject)
-                    }).then((result) => {
-                        if (result.insertImageDetail) {
-
-                            //This is the case when details are inserted into the database successfully.
-                            response = new responseMessage.GenericSuccessMessage();
-                            response.data = {
-                                imageId: result.insertImageDetail._id,
-                                imageCfUrl: result.insertImageDetail.imageInfo.cfUrl,
-                                imageS3Url: result.insertImageDetail.imageInfo.s3Url
-                            };
-                            return callback(null, response, response.code);
-                        } else {
-                            response = new responseMessage.GenericFailureMessage();
-                            return callback(null, response, response.code);
-                        }
-                    })
+                    const result = await Image.create(insertObject);
+                    if(result) {
+                        //This is the case when details are inserted into the database successfully.
+                        response = new responseMessage.GenericSuccessMessage();
+                        response.data = {
+                            imageId: result._id,
+                            imageCfUrl: result.imageInfo.cfUrl,
+                            imageS3Url: result.imageInfo.s3Url
+                        };
+                        return callback(null, response, response.code);
+                    } else {
+                        response = new responseMessage.GenericFailureMessage();
+                        return callback(null, response, response.code);
+                    }
                 }
             });
         } catch (err) {
