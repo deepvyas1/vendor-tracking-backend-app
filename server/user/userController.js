@@ -13,7 +13,7 @@ module.exports = {
     loginUser: function(req, res) {
         userService.loginUser(req.body, (err, loginData, statusCode) => {
             if(loginData.data) {
-                return res.header("x-access-token", loginData.data).status(statusCode).send(loginData.status);
+                return res.status(statusCode).send(loginData.data);
             } else {
                 return res.status(statusCode).send(loginData);
             }
