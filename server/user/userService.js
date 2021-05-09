@@ -27,7 +27,7 @@ module.exports = {
             const password = body.password;
 
             if(!email && !firstName && !lastName && !mobileNumber && !password) {
-                response = new responseMessage.incorrectPayload;
+                response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
