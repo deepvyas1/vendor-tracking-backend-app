@@ -29,7 +29,7 @@ module.exports = {
             let insertObject, awsS3Object;
 
             // Calling API to upload image on S3 Bucket
-            awsService.callSingleImageUpload(file, async (err, data) => {
+            awsService.callSingleImageUpload(file, async (err, data) => {console.log("data",data);
                 if (err) {
                     // If there was some error in uploading the image to S3
                     response = new responseMessage.GenericFailureMessage();

@@ -19,6 +19,6 @@ module.exports = function(app) {
 
     app.use("/v1/api/user/reviews", [isJWTAuthenticatedMW], likeRoute);
 
-    app.use("/v1/api/user/image/single", [isJWTAuthenticatedMW, isValidImage], imageRoute);
+    app.use("/v1/api/user/image/single", [isValidImage], imageRoute);
 
 }

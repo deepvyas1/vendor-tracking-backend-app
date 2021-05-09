@@ -30,23 +30,16 @@ module.exports = {
         }
     },
 
-    isValidImage: function(req, res, next) {
+    isValidImage: function(req, res, next) {console.log(req.file);
         const upload = multer({
-            fileFilter: function(req, file, callback) {
-                const allowedMimetype = imageConfig.imageMimeType;
-                const allowedExtensions = imageConfig.extensions;
-                const fileExtension = path.extname(file.originalname).toLowerCase();
-                const fileMimetype = file.mimetype;
-                if(!allowedMimetype.includes(fileMimetype) || !allowedExtensions.includes(fileExtension)) {
-                    return callback(false, null);
-                } 
-                return callback(null, true);
+            fileFilter: function(req, file, callback) {console.log(file);
+                callback(null, true);
             }
         }).single("file");
-        upload(req, res, (err) => {
+        upload(req, res, (err) => {console.log(err);
             if(err) {
                 return res.status(err.code).send(err);
-            } else {
+            } else {console.log(req.file);
                 next();
             }
         })

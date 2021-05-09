@@ -26,6 +26,7 @@ module.exports = {
             Body: file.buffer,
             Key: "images/" + Date.now() + '_' + file.originalname.replace(/\s+/g, "_")
         };
+        console.log("IN AWS SERVICE",file);
         upload(params, callback);
     }
 }

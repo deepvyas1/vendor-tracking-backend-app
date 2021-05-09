@@ -52,7 +52,7 @@ module.exports = {
     },
 
     getAllVendorDishes: function(req, res) {
-        dishesService.getAllVendorDishes(req.body, (err, data, statusCode) => {
+        dishesService.getAllVendorDishes(req.query, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });
     }
