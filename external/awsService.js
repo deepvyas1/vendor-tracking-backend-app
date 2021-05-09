@@ -19,7 +19,7 @@ function upload(params, callback) {
 
 module.exports = {
 
-    uploadSingleImage: function(file, callback) {
+    callSingleImageUpload: function(file, callback) {
         const params = {
             Bucket: "imagesbuckets3",
             ContentType: file.mimetype,
