@@ -1,6 +1,7 @@
 "use strict";
 
 const userService = require("./userService");
+const responseMessage = require("../../utils/responseMessage");
 
 module.exports = {
 
@@ -13,7 +14,9 @@ module.exports = {
     loginUser: function(req, res) {
         userService.loginUser(req.body, (err, loginData, statusCode) => {
             if(loginData.data) {
-                return res.status(statusCode).send(loginData.data);
+                const response = new responseMessage.GenericSuccessMessage();
+                response.data = loginData.data;
+                return res.status(statusCode).send(response);
             } else {
                 return res.status(statusCode).send(loginData);
             }
