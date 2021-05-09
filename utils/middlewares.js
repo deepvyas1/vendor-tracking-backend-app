@@ -44,7 +44,8 @@ module.exports = {
                     return callback(response, null);
                 }
                 return callback(null, true);
-            }
+            },
+            limits: {fileSize: maxSize}
         }).single("image");
         upload(req, res, (err) => {
             if (err) {
