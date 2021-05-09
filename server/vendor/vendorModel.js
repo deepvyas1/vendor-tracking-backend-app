@@ -11,7 +11,7 @@ const vendorSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Restaurant Name is required"],
-        maxlength: 20,
+        maxlength: 100,
         trim: true
     },
     createdBy: {
