@@ -20,7 +20,7 @@ dishesRouter.post("/delete", (req, res) => {
     dishesController.deleteDish(req, res);
 });
 
-dishesRouter.post("/vendor/all", (req, res) => {
+dishesRouter.get("/vendor/all", (req, res) => {
     dishesController.getAllVendorDishes(req, res);
 });
 
