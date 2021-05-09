@@ -21,7 +21,7 @@ module.exports = {
 
     callSingleImageUpload: function(file, callback) {
         const params = {
-            Bucket: "imagesbuckets3",
+            Bucket: "mediabuckets3",
             ContentType: file.mimetype,
             Body: file.buffer,
             Key: "images/" + Date.now() + '_' + file.originalname.replace(/\s+/g, "_")
