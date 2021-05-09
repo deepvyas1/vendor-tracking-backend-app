@@ -10,7 +10,7 @@ const s3 = new aws.S3({
 function upload(params, callback) {
     s3.upload(params, function(s3Err, data) {
         if(s3Err) {
-            return callback(err, null);
+            return callback(s3Err, null);
         } else {
             return callback(null, data);
         }
@@ -26,7 +26,6 @@ module.exports = {
             Body: file.buffer,
             Key: "images/" + Date.now() + '_' + file.originalname.replace(/\s+/g, "_")
         };
-        console.log("IN AWS SERVICE",file);
         upload(params, callback);
     }
 }

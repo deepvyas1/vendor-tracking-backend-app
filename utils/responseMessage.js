@@ -60,6 +60,12 @@ module.exports = {
         code: 401,
         status: "failure",
         message: "Missin or Bad Authentication"
+    },
+
+    fileTypeNotAllowed: {
+        code: 400,
+        status: "failure",
+        message: "file type not allowed"
     }
 
 }

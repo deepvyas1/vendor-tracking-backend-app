@@ -8,16 +8,16 @@ const imageConfig = require("../server/images/imageConfig.json");
 
 module.exports = {
 
-    isJWTAuthenticatedMW: function(req, res, next) {
+    isJWTAuthenticatedMW: function (req, res, next) {
         const requestUrl = req.protocol + "://" + req.host + req.originalUrl;
-        console.log("Inside JWT Authentication process for: "+requestUrl);
+        console.log("Inside JWT Authentication process for: " + requestUrl);
 
         const token = req.headers["x-access-token"] || req.body.token || req.query.token;
 
-        if(token) {
+        if (token) {
             jwt.verify(token, jwtSecretKey, (err, decoded) => {
-                if(err) {
-                    console.log("JWT Authentication failed for: "+requestUrl);
+                if (err) {
+                    console.log("JWT Authentication failed for: " + requestUrl);
                     return res.status(responseMessage.missingOrBadAuthentication.code).send(responseMessage.missingOrBadAuthentication);
                 } else {
                     req.decoded = decoded;
@@ -25,23 +25,33 @@ module.exports = {
                 }
             });
         } else {
-            console.log("Authentication token not provided for: "+requestUrl);
+            console.log("Authentication token not provided for: " + requestUrl);
             return res.status(responseMessage.missingOrBadAuthentication.code).send(responseMessage.missingOrBadAuthentication);
         }
     },
 
-    isValidImage: function(req, res, next) {console.log(req.file);
+    // route middleware to make sure that the image file uploaded is valid.
+    isValidImage: function (req, res, next) {
+        let response;
         const upload = multer({
-            fileFilter: function(req, file, callback) {console.log(file);
-                callback(null, true);
+            fileFilter: function (req, file, callback) {
+                const allowedMimitype = imageConfig.imageMimeType.values;
+                const allowedExtensions = imageConfig.extensions.values;
+                const imageExtension = path.extname(file.originalname).toLowerCase();
+                const imageMimeType = file.mimetype;
+                if (!allowedExtensions.includes(imageExtension) || !allowedMimitype.includes(imageMimeType)) {
+                    response = responseMessage.fileTypeNotAllowed;
+                    return callback(response, null);
+                }
+                return callback(null, true);
             }
-        }).single("file");
-        upload(req, res, (err) => {console.log(err);
-            if(err) {
+        }).single("image");
+        upload(req, res, (err) => {
+            if (err) {
                 return res.status(err.code).send(err);
-            } else {console.log(req.file);
+            } else {
                 next();
             }
         })
-    }
+    },
 }
