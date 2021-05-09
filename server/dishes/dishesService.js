@@ -230,8 +230,8 @@ module.exports = {
         console.log("Info ::: query recieved: "+JSON.stringify(queryParams));
         let response;
         try {
-            const vendorId = queryParams.vendorId;
-            const sortBy = queryParams.sortBy;
+            const vendorId = queryParams.vid;
+            const sortBy = queryParams.sort;
 
             if(parseInt(queryParams.limit) > 10 || !vendorId) {
                 console.log("Limit Exceeded: "+queryParams.limit+". vendorId: "+vendorId);

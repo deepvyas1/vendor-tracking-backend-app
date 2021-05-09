@@ -125,7 +125,7 @@ module.exports = {
         console.log("Info ::: query recieved: "+JSON.stringify(queryParams));
         let response;
         try {
-            const vendorType = queryParams.vendorType;
+            const vendorType = queryParams.vt;
 
             if(parseInt(queryParams.limit) > 10) {
                 console.log("Limit Exceeded: "+queryParams.limit);
@@ -172,8 +172,8 @@ module.exports = {
         console.log("Info ::: query recieved: "+JSON.stringify(queryParams));
         let response;
         try {
-            const vendorType = queryParams.vendorType;
-            const postalCode = queryParams.postalCode;
+            const vendorType = queryParams.vt;
+            const postalCode = queryParams.poc;
 
             if(parseInt(queryParams.limit) > 10 || !postalCode) {
                 console.log("Limit Exceeded: "+queryParams.limit+". postalCode: "+postalCode);
