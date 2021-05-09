@@ -9,7 +9,7 @@ const s3 = new aws.S3({
 
 function upload(params, callback) {
     s3.upload(params, function(s3Err, data) {
-        if(err) {
+        if(s3Err) {
             return callback(err, null);
         } else {
             return callback(null, data);
