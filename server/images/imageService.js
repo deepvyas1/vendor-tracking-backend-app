@@ -4,6 +4,7 @@ const responseMessage = require("../../utils/responseMessage");
 const path = require("path");
 const probe = require("probe-image-size");
 const Image = require("./imageModel");
+const awsService = require("../../external/awsService");
 
 module.exports = {
 
