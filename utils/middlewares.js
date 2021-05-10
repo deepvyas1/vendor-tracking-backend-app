@@ -31,10 +31,10 @@ module.exports = {
     },
 
     // route middleware to make sure that the image file uploaded is valid.
-    isValidImage: function (req, res, next) {
+    isValidImage: function (req, res, next) {console.log(req.body, req.file);
         let response;
         const upload = multer({
-            fileFilter: function (req, file, callback) {
+            fileFilter: function (req, file, callback) {console.log("here", file)
                 const allowedMimitype = imageConfig.imageMimeType.values;
                 const allowedExtensions = imageConfig.extensions.values;
                 const imageExtension = path.extname(file.originalname).toLowerCase();
