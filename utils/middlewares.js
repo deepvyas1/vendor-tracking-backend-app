@@ -50,7 +50,7 @@ module.exports = {
     isValidImage: function (req, res, next) {
         let response;
         const upload = multer({
-            fileFilter: function (req, file, callback) {
+            fileFilter: function (req, file, callback) {console.log(file);
               checkFileType(file, res, callback);
             }
         }).single("image");
@@ -60,7 +60,7 @@ module.exports = {
                 response = responseMessage.fileUploadFailed;
                 return res.status(response.code).send(response);
             } else {
-                    next();
+                next();
             }
         });
     },
