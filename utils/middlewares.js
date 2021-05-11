@@ -6,6 +6,21 @@ const path = require("path");
 const responseMessage = require("./responseMessage");
 const imageConfig = require("../server/images/imageConfig.json");
 
+
+function checkFileType(file, res, callback) {
+    let response;
+    const allowedMimitype = imageConfig.imageMimeType.values;
+    const allowedExtensions = imageConfig.extensions.values;
+    const imageExtension = path.extname(file.originalname).toLowerCase();
+    const imageMimeType = file.mimetype;
+    if (!allowedExtensions.includes(imageExtension) || !allowedMimitype.includes(imageMimeType)) {
+        response = responseMessage.fileTypeNotAllowed;
+        return res.status(response.code).send(response);
+    }
+    response = new responseMessage.GenericSuccessMessage();
+    return callback(null, true);
+
+}
 module.exports = {
 
     isJWTAuthenticatedMW: function (req, res, next) {
@@ -30,28 +45,23 @@ module.exports = {
         }
     },
 
+    
     // route middleware to make sure that the image file uploaded is valid.
-    isValidImage: function (req, res, next) {console.log(req.body, req.file);
+    isValidImage: function (req, res, next) {
         let response;
         const upload = multer({
-            fileFilter: function (req, file, callback) {console.log("here", file)
-                const allowedMimitype = imageConfig.imageMimeType.values;
-                const allowedExtensions = imageConfig.extensions.values;
-                const imageExtension = path.extname(file.originalname).toLowerCase();
-                const imageMimeType = file.mimetype;
-                if (!allowedExtensions.includes(imageExtension) || !allowedMimitype.includes(imageMimeType)) {
-                    response = responseMessage.fileTypeNotAllowed;
-                    return callback(response, null);
-                }
-                return callback(null, true);
+            fileFilter: function (req, file, callback) {
+              checkFileType(file, res, callback);
             }
         }).single("image");
         upload(req, res, (err) => {
             if (err) {
-                return res.status(err.code).send(err);
+                console.log("Error ::: Image upload failed with error: "+JSON.stringify(err));
+                response = responseMessage.fileUploadFailed;
+                return res.status(response.code).send(response);
             } else {
-                next();
+                    next();
             }
-        })
+        });
     },
 }

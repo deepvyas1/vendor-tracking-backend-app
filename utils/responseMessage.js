@@ -66,6 +66,11 @@ module.exports = {
         code: 400,
         status: "failure",
         message: "file type not allowed"
+    },
+    fileUploadFailed: {
+        code: 500,
+        status: "failure",
+        message: "Something went wrong. We are investigating..."
     }
 
 }
