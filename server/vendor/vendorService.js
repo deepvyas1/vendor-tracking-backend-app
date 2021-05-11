@@ -23,6 +23,7 @@ module.exports = {
             const yearOfEstablishment = body.yearOfEstablishment;
             const openingTime = body.openingTime;
             const closingTime = body.closingTime;
+            let locArray = [];
 
             if (!name && !createdBy && !vendorType && !license) {
                 console.log("Missing Info ::: name: " + name + ". createdBy: " + createdBy + ". vendorType: " + vendorType + ". license: " + license);
@@ -31,10 +32,12 @@ module.exports = {
             }
 
             if (vendorType === vendorConfig.type.restaurant) {
-                if (!address && !yearOfEstablishment && !location && openingTime && closingTime) {
+                if (!address || !yearOfEstablishment || !location || !openingTime || !closingTime || !location.longitude || !location.latitude) {
                     response = new responseMessage.incorrectPayload;
                     return callback(null, response, response.code);
                 }
+                locArray.push(location.longitude);
+                locArray.push(location.latitude);
             }
             const insertObject = new Vendor({
                 name: name,
@@ -44,7 +47,7 @@ module.exports = {
                 imageUrl: imageUrl,
                 imageId: imageId,
                 license: license,
-                location: location,
+                location: locArray,
                 yearOfEstablishment: yearOfEstablishment,
                 openingTime: openingTime,
                 closingTime: closingTime
@@ -86,12 +89,18 @@ module.exports = {
             const openingTime = body.openingTime;
             const closingTime = body.closingTime;
 
-            if (!vendorId) {
-                console.log("Missing Info ::: name: " + name + ". createdBy: " + createdBy + ". vendorType: " + vendorType + ". license: " + license);
+            if (!vendorId || !name ||!createdBy) {
+                console.log("Missing Info ::: name: " + name + ". createdBy: " + createdBy+". name: "+name);
                 response = new responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
+            let locArray = [];
+            if(location && location.latitude && location.longitude) {
+                locArray.push(location.longitude);
+                locArray.push(location.latitude);
+            } 
+           
             const updateObject = {
                 $set: {
                     name: name,
@@ -99,7 +108,7 @@ module.exports = {
                     addressInfo: address,
                     imageUrl: imageUrl,
                     imageId: imageId,
-                    location: location,
+                    location: locArray,
                     openingTime: openingTime,
                     closingTime: closingTime
                 }

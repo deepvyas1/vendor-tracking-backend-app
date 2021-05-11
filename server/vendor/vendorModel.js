@@ -50,7 +50,9 @@ const vendorSchema = new mongoose.Schema({
         enum: vendorConfig.vendorStatus.values
     },
     location: {
-        type: Location.locationSchema,
+        type: [Number],
+        required: [true, "location info is required"],
+        default: []
     },
     license: {
         type: String,
