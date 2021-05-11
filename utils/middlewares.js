@@ -50,7 +50,7 @@ module.exports = {
     isValidImage: function (req, res, next) {
         let response;
         const upload = multer({
-            fileFilter: function (req, file, callback) {console.log(file);
+            fileFilter: function (req, file, callback) {console.log(req);
               checkFileType(file, res, callback);
             }
         }).single("image");
