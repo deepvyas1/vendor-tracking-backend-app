@@ -55,13 +55,18 @@ module.exports = {
             }
         }).single("image");
         upload(req, res, (err) => {
-            if (err) {
-                console.log("Error ::: Image upload failed with error: "+JSON.stringify(err));
-                response = responseMessage.fileUploadFailed;
-                return res.status(response.code).send(response);
-            } else {
-                next();
+            try {
+                if (err) {
+                    console.log("Error ::: Image upload failed with error: "+JSON.stringify(err));
+                    response = responseMessage.fileUploadFailed;
+                    return res.status(response.code).send(response);
+                } else {
+                    next();
+                }
+            }catch(err) {
+                console.log(err);
             }
+            
         });
     },
 }
