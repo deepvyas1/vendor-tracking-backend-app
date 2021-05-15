@@ -21,5 +21,11 @@ module.exports = {
         userService.sendOtp(req.body, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });
+    },
+
+    getUserDetail: function(req, res) {
+        userService.getUserDetail(req, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
     }
 }

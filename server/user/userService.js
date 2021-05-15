@@ -171,7 +171,7 @@ module.exports = {
             const result = await User.findOne(query);
             if (result) {
                 response = new responseMessage.GenericSuccessMessage();
-                response.data = result;
+                response.data = _.omit(JSON.parse(JSON.stringify(result)), ['_id', '__v', 'otp', 'password']);
                 return callback(null, response, response.code);
             } else {
                 response = new responseMessage.ErrorInQueryingDB();

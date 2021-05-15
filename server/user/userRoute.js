@@ -14,7 +14,11 @@ userRouter.post("/update", (req, res) => {
 
 userRouter.post("/send/otp", (req, res) => {
     userController.sendOtp(req, res);
-})
+});
+
+userRouter.get("/details", (req, res) => {
+    userController.getUserDetail(req, res);
+});
 
 module.exports = {
     userRouter: userRouter
