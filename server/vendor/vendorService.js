@@ -81,11 +81,10 @@ module.exports = {
                             return callback(null, response, response.code);
                         }
                     });
-                }else {
-                    response = new responseMessage.GenericFailureMessage();
-                    return callback(null, response, response.code);
                 }
-
+            }else {
+                response = new responseMessage.GenericFailureMessage();
+                return callback(null, response, response.code);
             }
         } catch (err) {
             console.log(`Error ::: error ${err.message} stack ${err.stack}`);
