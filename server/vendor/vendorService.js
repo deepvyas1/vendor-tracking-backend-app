@@ -20,7 +20,12 @@ module.exports = {
                 return callback(null, response, response.code);
             }
 
-            const query = { mobileNumber: mobileNumber, otp: otp }
+            const query = { mobileNumber: mobileNumber, otp: otp };
+            const updateObject = {
+                $set: {
+                    otp: null
+                }
+            }
 
             const result = await Vendor.findOne(query);
             if (result) {
@@ -35,6 +40,7 @@ module.exports = {
                         vendorId: result._id,
                         createdBy: result.createdBy
                     };
+                    const deleteOtp = await Vendor.findOneAndUpdate(query, updateObject);
                     return callback(null, response, response.code);
                 });
             } else {

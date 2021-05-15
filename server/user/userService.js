@@ -28,6 +28,7 @@ module.exports = {
             const address = body.address;
             const firebaseToken = body.firebaseToken;
             const location = body.location;
+            const mobileNumber = body.mobileNumber;
             const userId = body.userId;
 
             if (!userId) {
@@ -43,6 +44,7 @@ module.exports = {
                     lastName: lastName,
                     addressInfo: address,
                     location: location,
+                    mobileNumber: mobileNumber,
                     firebaseRegistrationToken: firebaseToken
                 }
             };
@@ -75,7 +77,12 @@ module.exports = {
                 return callback(null, response, response.code);
             }
 
-            const query = { email: email, otp: otp }
+            const query = { email: email, otp: otp };
+            const updateObject = {
+                $set: {
+                    otp: null
+                }
+            }
 
             const result = await User.findOne(query);
             if (result) {
@@ -89,6 +96,7 @@ module.exports = {
                         token: data,
                         userId: result._id
                     };
+                    const deleteOtp = await User.findOneAndUpdate(query, updateObject);
                     return callback(null, response, response.code);
                 });
             } else {
