@@ -75,7 +75,7 @@ const vendorSchema = new mongoose.Schema({
     mobileNumber: {
         type: String,
         required: [true, "Mobile Number is required"],
-        index: true
+        unique: true
     },
     otp:{
         type: Number
