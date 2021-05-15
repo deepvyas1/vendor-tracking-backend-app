@@ -29,7 +29,7 @@ module.exports = {
 
             const result = await Vendor.findOne(query);
             if (result) {
-                result.authenticate((err, data) => {
+                result.authenticate(async (err, data) => {
                     if (err) {
                         response = new responseMessage.GenericFailureMessage();
                         return callback(null, response, response.code);
