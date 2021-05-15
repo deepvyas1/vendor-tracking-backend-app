@@ -81,6 +81,9 @@ module.exports = {
                             return callback(null, response, response.code);
                         }
                     });
+                }else {
+                    response = new responseMessage.GenericFailureMessage();
+                    return callback(null, response, response.code);
                 }
 
             }
