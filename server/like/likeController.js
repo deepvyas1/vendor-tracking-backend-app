@@ -7,7 +7,6 @@ module.exports = {
 
     likeVendor: function(req, res) {
         req.body.flowType = likeConfig.flow.vendor;
-        req
         likeService.likeDislikeDishVendor(req.body, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });

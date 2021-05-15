@@ -19,46 +19,36 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, "email is required"],
         index: true
     },
     mobileNumber: {
         type: String,
-        required: [true, "mobile number is required"],
         index: true
     },
     password: {
         type: String,
-        required: [true, "Password is required"]
     },
     firebaseRegistrationToken: {
         type: String,
     },
     location: {
         type: Location.locationSchema,
-        required: [true, "location is required"]
     },
     addressInfo: {
         type: Address.addressSchema,
+    },
+    otp: {
+        type: Number
     }
 },{
     timestamps: true
 });
 
 userSchema.methods = {
-    authenticate: async function(password, callback) {
-        const isValidUser = await bcrypt.compare(password, this.password);
-        if(isValidUser) {
-            const token = jwt.sign({id: this._id}, jwtSecretKey);
-            return callback(null, token);
-        } else {
-            const response = {
-                code: 400,
-                status: "failure",
-                message: "UserName or Paswword is incorrect"
-            };
-            return callback(response, null);
-        }
+    authenticate: async function(callback) {
+        //const isValidUser = await bcrypt.compare(password, this.password);
+        const token = jwt.sign({id: this._id}, jwtSecretKey);
+        return callback(null, token);
     }
 }
 

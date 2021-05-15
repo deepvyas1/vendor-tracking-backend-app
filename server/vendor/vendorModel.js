@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const mongoosePaginate = require("mongoose-paginate");
 const vendorConfig = require("./vendorConfig.json");
 const Location = require("../models/vendorLocationSchema");
@@ -10,7 +11,6 @@ const User = require("../models/userSchema").UserSchema;
 const vendorSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Restaurant Name is required"],
         maxlength: 100,
         trim: true
     },
@@ -20,7 +20,6 @@ const vendorSchema = new mongoose.Schema({
     },
     vendorType: {
         type: String,
-        required: [true, "vendor type is required"],
         enum: vendorConfig.type.values
     },
     addressInfo: {
@@ -50,9 +49,7 @@ const vendorSchema = new mongoose.Schema({
         enum: vendorConfig.vendorStatus.values
     },
     location: {
-        type: [Number],
-        required: [true, "location info is required"],
-        default: []
+        type: Location.locationSchema,
     },
     license: {
         type: String,
@@ -74,11 +71,24 @@ const vendorSchema = new mongoose.Schema({
         type: String,
         default: vendorConfig.status.active,
         enum: vendorConfig.status.values
+    },
+    mobileNumber: {
+        type: String,
+        required: [true, "Mobile Number is required"],
+        index: true
+    },
+    otp:{
+        type: Number
     }
 },{
     timestamps: true
 });
 
-vendorSchema.index({license: 1}, {unique: true});
+vendorSchema.methods.authenticate = function(callback) {
+    const token = jwt.sign({id: this._id}, jwtSecretKey);
+    return callback(null, token);
+}
+vendorSchema.index({license: 1, mobileNumber: 1}, {unique: true});
+vendorSchema.index({location: "2dsphere"});
 vendorSchema.plugin(mongoosePaginate);
 module.exports = mongoose.mainConnection.model("Vendors", vendorSchema, "vendors");

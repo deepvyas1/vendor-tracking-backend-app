@@ -4,7 +4,10 @@ const mongoose = require("mongoose");
 
 const locationSchema = new mongoose.Schema({
     _id: false,
-    loc: {
+    type: {
+        type: String
+    },
+    coordinates: {
         type: [Number],
         required: [true, "location info is required"],
         default: []

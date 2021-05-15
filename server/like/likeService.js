@@ -253,5 +253,38 @@ module.exports = {
             response = new responseMessage.ErrorInQueryingDB();
             return callback(null, response, response.code);
         }
+    },
+
+    getUserLikedDishes: async function(dishId, userId, callback) {
+        let response;
+        try {
+            let query;
+            if(Array.isArray(dishId)) {
+                query = {
+                    "createdBy.userId": userId,
+                    status: likeConfig.status.active,
+                    flowId: {$in: dishId}
+                }
+            } else {
+                query = {
+                    "createdBy.userId": userId,
+                    status: likeConfig.status.active,
+                    flowId: mongoose.Types.ObjectId(dishId)
+                }
+            }
+            const result = await Like.find(query);
+            if(result) {
+                response = new responseMessage.GenericSuccessMessage();
+                response.data = result;
+                return callback(null, response);
+            } else {
+                response = new responseMessage.GenericFailureMessage();
+                return callback(null, response);
+            }
+        } catch(err) {
+            console.log(`Error ::: error ${err.message} stack ${err.stack}`);
+            response = new responseMessage.ErrorInQueryingDB();
+            return callback(null, response);
+        }
     }
 }

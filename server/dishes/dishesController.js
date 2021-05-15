@@ -2,6 +2,10 @@
 
 const dishesService = require("./dishesService");
 const vendorService = require("../vendor/vendorService");
+const likeService = require("../like/likeService");
+const likeConfig = require("../like/likeConfig.json");
+const responseMessage = require("../../utils/responseMessage");
+const { response } = require("express");
 
 module.exports = {
 
@@ -54,6 +58,50 @@ module.exports = {
     getAllVendorDishes: function(req, res) {
         dishesService.getAllVendorDishes(req.query, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
+        });
+    },
+
+    getDishDetail: function(req, res) {
+        dishesService.getDishDetail(req, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
+    },
+
+    getAllDishes: function(req, res) {
+        let response;
+        dishesService.getAllDishes(req, (err, dishData, statusCode) => {
+            if(!err && dishData.code === 200 && dishData.status !== "not_found") {console.log("Here");
+                const userId = req.query.uid;
+                const dishesIndex = dishData.data.dishesIndex;
+                let dishDetails = dishData.data.dishDetails;
+                const dishIds = dishData.data.dishIds;
+                let index;
+                if(userId) {
+                    likeService.getUserLikedDishes(dishIds, userId, (err, likeData) => {
+                        if(!err && likeData.status !== "not_found" && likeData.code === 200) {console.log(likeData);
+                            likeData.data.forEach(element => {
+                                index = dishesIndex[element.flowId];
+                                if(element.reactionType === likeConfig.reaction.like) {
+                                    dishDetails[index].hasUserLiked = true;
+                                } else if(element.reactionType === likeConfig.reaction.dislike) {
+                                    dishDetails[index].hasUserDisliked = true;
+                                }
+                            });
+                        }
+                    });
+                    response = new responseMessage.GenericSuccessMessage();
+                    response.total = dishData.total;
+                    response.limit = dishData.limit;
+                    response.page = dishData.page;
+                    response.pages = dishData.pages;
+                    response.data = dishDetails;
+                    return res.status(response.code).send(response);
+                } else {
+                    return res.status(statusCode).send(dishData);
+                }
+            } else {
+                return res.status(statusCode).send(dishData);
+            }
         });
     }
 }

@@ -22,7 +22,7 @@ module.exports = {
             const vendorType = body.vendorType;
             const createdBy = body.createdBy;
 
-            if(!vendorId || !name || !price || !dishType || !createdBy) {
+            if(!vendorId || !name || !price || !dishType || !createdBy || !vendorType) {
                 console.log("Missing Info ::: vendorId: "+vendorId+". name: "+name+". price: "+price+". dishType: "+dishType
                 +". createdBy: "+createdBy);
                 response = responseMessage.incorrectPayload;
@@ -129,33 +129,18 @@ module.exports = {
         let response;
         try {
             const dishId = body.dishId;
-            const updateType = body.updateType;
+            const updateCount = body.updateCount;
             const createdBy = body.createdBy;
 
-            if(!dishId ||!updateType || !createdBy) {
-                console.log("Missing Info ::: dishId: "+dishId+". updateType: "+updateType+". createdBy: "+createdBy);
+            if(!dishId ||!updateCount || !createdBy) {
+                console.log("Missing Info ::: dishId: "+dishId+". updateCount: "+updateCount+". createdBy: "+createdBy);
                 response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
-            let updateObject;
-            if(updateType === "increment") {
-                updateObject = {
-                    $set: {
-                        updatedBy: createdBy
-                    },
-                    $inc: {
-                        dishAvailability: 1
-                    }
-                }
-            } else if(updateType === "decrement") {
-                updateObject = {
-                    $set: {
-                        updatedBy: createdBy
-                    },
-                    $inc: {
-                        dishAvailability: -1
-                    }
+            let updateObject = {
+                $set: {
+                    dishAvailability: updateCount
                 }
             }
             const query = {
@@ -266,6 +251,87 @@ module.exports = {
                 response = new responseMessage.GenericFailureMessage();
                 return callback(null, response, response.code);
             }
+        } catch(err) {
+            console.log(`Error ::: error ${err.message} stack ${err.stack}`);
+            response = new responseMessage.ErrorInQueryingDB();
+            return callback(null, response, response.code);
+        }
+    },
+
+    getDishDetail: async function(req, callback) {
+        console.log("Info ::: queryParams recieved: "+JSON.stringify(req.query));
+        let response;
+        try {
+            const dishId = req.query.did;
+            if(!dishId) {
+                console.log("Missing Info ::: dishId: "+dishId);
+                response = responseMessage.incorrectPayload;
+                return callback(null, response, reponse.code);
+            }
+
+            const query = {
+                _id: mongoose.Types.ObjectId(dishId),
+                status: dishesConfig.status.active
+            }
+
+            const result = await Dishes.findOne(query);
+            if(result) {
+                response = new responseMessage.GenericSuccessMessage();
+                response.data = result;
+                return callback(null, response, response.code);
+            } else {
+                response = new responseMessage.ObjectDoesNotExistInDB();
+                return callback(null, response, response.code);
+            }
+        }catch(err) {
+            console.log(`Error ::: error ${err.message} stack ${err.stack}`);
+            response = new responseMessage.ErrorInQueryingDB();
+            return callback(null, response, response.code);
+        }
+    },
+
+    getAllDishes: async function(req, callback) {
+        let response;
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+
+            const query = {};
+            const options = {
+                page: page,
+                limit: limit,
+                sort: {likeCount: -1}
+            }
+            console.log("here");
+            let dishesIndex = {}, index = 0, dishIds = [];
+            const result = await Dishes.paginate(query, options);
+            if(result) {
+                const dishesDetail = JSON.parse(JSON.stringify(result.docs));
+                const dishDetails = dishesDetail.map(dish => {
+                    dishesIndex[dish._id] = index;
+                    index++;
+                    dishIds.push(dish._id);
+                    dish.hasUserLiked = false;
+                    dish.hasUserDisliked = false;
+                    return dish;
+                });
+               
+                response = new responseMessage.GenericSuccessMessage();
+                response.total = result.total;
+                response.limit = result.limit;
+                response.page = result.page;
+                response.pages = result.pages;
+                response.data = {
+                    dishesIndex: dishesIndex,
+                    dishDetails: dishDetails,
+                    dishIds: dishIds
+                };
+                return callback(null, response, response.code);
+            } else {
+                response = new responseMessage.GenericFailureMessage();
+                return callback(null, response, response.code);
+            }
+
         } catch(err) {
             console.log(`Error ::: error ${err.message} stack ${err.stack}`);
             response = new responseMessage.ErrorInQueryingDB();

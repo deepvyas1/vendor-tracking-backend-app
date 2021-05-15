@@ -27,4 +27,28 @@ module.exports = {
             return res.status(statusCode).send(data);
         });
     },
+
+    getVendorDetail: function(req, res) {
+        vendorService.getVendorDetail(req, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
+    },
+
+    login: function(req, res) {
+        vendorService.login(req.body, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
+    },
+
+    sendOtp: function(req, res) {
+        vendorService.sendOtp(req.body, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
+    },
+
+    getNearByVendors:  function(req, res) {
+        vendorService.getAllNearByVendor(req.body, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
+    }
 }

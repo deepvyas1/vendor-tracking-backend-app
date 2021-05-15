@@ -5,6 +5,8 @@ const vendorRoute = require("./server/vendor/vendorRoute").vendorRouter;
 const dishesRoute = require("./server/dishes/dishesRoute").dishesRouter;
 const likeRoute = require("./server/like/likeRoute").likeRouter;
 const imageRoute = require("./server/images/imageRoute").imageRouter;
+const vendorFeedRoute = require("./server/vendor/vendorRoute").vendorFeedRouter;
+const vendorDishRoute = require("./server/dishes/dishesRoute").dishFeedRouter;
 
 const isJWTAuthenticatedMW = require("./utils/middlewares").isJWTAuthenticatedMW;
 const isValidImage = require("./utils/middlewares").isValidImage;
@@ -15,7 +17,11 @@ module.exports = function(app) {
 
     app.use("/v1/api/user/vendor", [isJWTAuthenticatedMW], vendorRoute);
 
+    app.use("/v1/api/user/feed/vendor", vendorFeedRoute);
+
     app.use("/v1/api/user/dish", [isJWTAuthenticatedMW], dishesRoute);
+
+    app.use("/v1/api/user/feed/dish", vendorDishRoute);
 
     app.use("/v1/api/user/reviews", [isJWTAuthenticatedMW], likeRoute);
 

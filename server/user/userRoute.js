@@ -8,9 +8,13 @@ userRouter.post("/login", (req, res) => {
     userController.loginUser(req, res);
 });
 
-userRouter.post("/signup", (req, res) => {
-    userController.registerNewUser(req, res);
+userRouter.post("/update", (req, res) => {
+    userController.updateUser(req, res);
 });
+
+userRouter.post("/send/otp", (req, res) => {
+    userController.sendOtp(req, res);
+})
 
 module.exports = {
     userRouter: userRouter
