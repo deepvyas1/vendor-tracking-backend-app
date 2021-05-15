@@ -38,12 +38,16 @@ module.exports = {
             const query = {
                 _id: mongoose.Types.ObjectId(userId)
             }
+            const geoLocation =  {
+                type: "Point",
+                coordinates: location
+            }
             const updateObject = {
                 $set: {
                     firstName: firstName,
                     lastName: lastName,
                     addressInfo: address,
-                    location: location,
+                    location: geoLocation,
                     mobileNumber: mobileNumber,
                     firebaseRegistrationToken: firebaseToken
                 }
