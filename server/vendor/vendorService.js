@@ -121,16 +121,15 @@ module.exports = {
             }
 
             if (vendorType === vendorConfig.type.restaurant) {
-                if (!address || !yearOfEstablishment || !location || !openingTime || !closingTime || !location.longitude || !location.latitude) {
+                if (!address || !yearOfEstablishment || !location || !openingTime || !closingTime) {
                     response = new responseMessage.incorrectPayload;
                     return callback(null, response, response.code);
                 }
             }
-            locArray.push(location.longitude);
-            locArray.push(location.latitude);
+
             const geoLocation = {
                 type: "Point",
-                coordinates: locArray
+                coordinates: location
             }
             const userId = mongoose.Types.ObjectId();
             const createdBy = {
@@ -194,14 +193,10 @@ module.exports = {
                 return callback(null, response, response.code);
             }
 
-            let locArray = [];
-            if (location && location.latitude && location.longitude) {
-                locArray.push(location.longitude);
-                locArray.push(location.latitude);
-            }
+           
             const geoLocation = {
                 type: "Point",
-                coordinates: locArray
+                coordinates: location
             }
             const updateObject = {
                 $set: {

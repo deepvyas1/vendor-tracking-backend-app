@@ -88,7 +88,8 @@ vendorSchema.methods.authenticate = function(callback) {
     const token = jwt.sign({id: this._id}, jwtSecretKey);
     return callback(null, token);
 }
-vendorSchema.index({license: 1, mobileNumber: 1}, {unique: true});
+vendorSchema.index({license: 1}, {unique: true});
+vendorSchema.index({mobileNumber: 1}, {unique: true});
 vendorSchema.index({location: "2dsphere"});
 vendorSchema.plugin(mongoosePaginate);
 module.exports = mongoose.mainConnection.model("Vendors", vendorSchema, "vendors");
