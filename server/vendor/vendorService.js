@@ -61,7 +61,7 @@ module.exports = {
             const mobileNumber = body.mobileNumber;
 
             if (!mobileNumber) {
-                response = new responseMessage.incorrectPayload;
+                response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
