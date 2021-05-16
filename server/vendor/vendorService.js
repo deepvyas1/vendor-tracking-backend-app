@@ -40,7 +40,7 @@ module.exports = {
                         vendorId: result._id,
                         createdBy: result.createdBy
                     };
-                    const deleteOtp = await Vendor.findOneAndUpdate(query, updateObject);
+                    //const deleteOtp = await Vendor.findOneAndUpdate(query, updateObject);
                     return callback(null, response, response.code);
                 });
             } else {
