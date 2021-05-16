@@ -266,7 +266,7 @@ module.exports = {
             if(!dishId) {
                 console.log("Missing Info ::: dishId: "+dishId);
                 response = responseMessage.incorrectPayload;
-                return callback(null, response, reponse.code);
+                return callback(null, response, response.code);
             }
 
             const query = {
