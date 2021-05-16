@@ -16,7 +16,7 @@ module.exports = {
             const otp = body.otp;
 
             if (!mobileNumber || !otp) {
-                response = new responseMessage.incorrectPayload;
+                response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
@@ -122,13 +122,13 @@ module.exports = {
             if (!name || !vendorType || !license || !location || !mobileNumber || !userName) {
                 console.log("Missing Info ::: name: " + name + ". vendorType: " + vendorType + ". license: " + license+". location: "+location
                 +". mobileNumber: "+mobileNumber);
-                response = new responseMessage.incorrectPayload;
+                response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
             if (vendorType === vendorConfig.type.restaurant) {
                 if (!address || !yearOfEstablishment || !location || !openingTime || !closingTime) {
-                    response = new responseMessage.incorrectPayload;
+                    response = responseMessage.incorrectPayload;
                     return callback(null, response, response.code);
                 }
             }
@@ -195,7 +195,7 @@ module.exports = {
 
             if (!vendorId) {
                 console.log("Missing Info ::: name: " + name + ". createdBy: " + createdBy + ". name: " + name);
-                response = new responseMessage.incorrectPayload;
+                response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
             }
 
