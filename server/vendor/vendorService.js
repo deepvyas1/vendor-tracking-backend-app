@@ -65,7 +65,7 @@ module.exports = {
                 return callback(null, response, response.code);
             }
 
-            const otp = parseInt(Math.random() * 100000);
+            const otp = Math.floor(Math.random() * 90000) + 10000;
 
             const query = { mobileNumber: mobileNumber };
 
