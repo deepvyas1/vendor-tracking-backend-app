@@ -27,5 +27,11 @@ module.exports = {
         userService.getUserDetail(req, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });
+    },
+
+    loginUserWithGoogle: function(req, res) {
+        userService.loginWithGoogle(req.body, (err, data, statusCode) => {
+            return res.status(statusCode).send(data);
+        });
     }
 }

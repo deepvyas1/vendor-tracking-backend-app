@@ -195,5 +195,54 @@ module.exports = {
             response = new responseMessage.ErrorInQueryingDB();
             return callback(null, response, response.code);
         }
+    },
+
+    loginWithGoogle: async function (body, callback) {
+        console.log("Info ::: body recieved: "+JSON.stringify(body));
+        let response;
+        try {
+            const email = body.email;
+            const firstName = body.firstName;
+            const lastName = body.lastName;
+
+            if(!email || !firstName || !lastName) {
+                response = responseMessage.incorrectPayload;
+                return callback(null, response, response.code);
+            }
+
+            const query = {
+                email: email
+            }
+            const updateObject = {
+                $set: {
+                    firstName: firstName,
+                    lastName: lastName
+                }
+            }
+
+            const result = await User.findOneAndUpdate(query, updateObject, {upsert: true, new: true});
+            if(result) {
+                result.authenticate((err, data) => {
+                    if(err) {
+                        response = new responseMessage.GenericFailureMessage();
+                        return callback(null, response, response.code);
+                    } else {
+                        response = new responseMessage.GenericSuccessMessage();
+                        response.data = {
+                            token: data,
+                            userId: result._id
+                        };
+                        return callback(null, response, response.code);
+                    }
+                });
+            } else {
+                response = new responseMessage.GenericFailureMessage();
+                return callback(null, response, response.code);
+            }
+        } catch(err) {
+            console.log(`Error ::: error ${err.message} stack ${err.stack}`);
+            response = new responseMessage.ErrorInQueryingDB();
+            return callback(null, response, response.code);
+        }
     }
 }

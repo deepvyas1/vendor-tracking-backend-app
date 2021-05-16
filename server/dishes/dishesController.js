@@ -70,7 +70,7 @@ module.exports = {
     getAllDishes: function(req, res) {
         let response;
         dishesService.getAllDishes(req, (err, dishData, statusCode) => {
-            if(!err && dishData.code === 200 && dishData.status !== "not_found") {console.log("Here");
+            if(!err && dishData.code === 200 && dishData.status !== "not_found") {
                 const userId = req.query.uid;
                 const dishesIndex = dishData.data.dishesIndex;
                 let dishDetails = dishData.data.dishDetails;
@@ -78,7 +78,7 @@ module.exports = {
                 let index;
                 if(userId) {
                     likeService.getUserLikedDishes(dishIds, userId, (err, likeData) => {
-                        if(!err && likeData.status !== "not_found" && likeData.code === 200) {console.log(likeData);
+                        if(!err && likeData.status !== "not_found" && likeData.code === 200) {
                             likeData.data.forEach(element => {
                                 index = dishesIndex[element.flowId];
                                 if(element.reactionType === likeConfig.reaction.like) {
@@ -97,10 +97,17 @@ module.exports = {
                     response.data = dishDetails;
                     return res.status(response.code).send(response);
                 } else {
-                    return res.status(statusCode).send(dishData);
+                    response = new responseMessage.GenericSuccessMessage();
+                    response.total = dishData.total;
+                    response.limit = dishData.limit;
+                    response.page = dishData.page;
+                    response.pages = dishData.pages;
+                    response.data = dishDetails;
+                    return res.status(response.code).send(response);
                 }
             } else {
-                return res.status(statusCode).send(dishData);
+                response = new responseMessage.GenericFailureMessage();
+                return res.status(response.code).send(response);
             }
         });
     }

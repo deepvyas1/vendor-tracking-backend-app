@@ -264,7 +264,7 @@ module.exports = {
             if (result) {
                 const vendorDetail = JSON.parse(JSON.stringify(result.docs));
                 vendorDetail.forEach(vendor => {
-                    let vendorObj = _.omit(vendor, ['createdBy', 'updatedBy', 'otp', 'status', '_id', '__v']);
+                    let vendorObj = _.omit(vendor, ['createdBy', 'updatedBy', 'otp', 'status', '__v']);
                     vendorDetails.push(vendorObj);
                 });
                 response = new responseMessage.GenericSuccessMessage();
@@ -322,7 +322,7 @@ module.exports = {
             if (result) {
                 const vendorDetail = JSON.parse(JSON.stringify(result.docs));
                 vendorDetail.forEach(vendor => {
-                    let vendorObj = _.omit(vendor, ['createdBy', 'updatedBy', 'otp', 'status', '_id', '__v']);
+                    let vendorObj = _.omit(vendor, ['createdBy', 'updatedBy', 'otp', 'status', '__v']);
                     vendorDetails.push(vendorObj);
                 });
                 response = new responseMessage.GenericSuccessMessage();
@@ -361,7 +361,7 @@ module.exports = {
             const result = await Vendor.findOne(query);
             if (result) {
                 response = new responseMessage.GenericSuccessMessage();
-                response.data = _.omit(JSON.parse(JSON.stringify(result)), ['createdBy', 'updatedBy', 'otp', 'status', '_id']);
+                response.data = _.omit(JSON.parse(JSON.stringify(result)), ['createdBy', 'updatedBy', 'otp', 'status']);
                 return callback(null, response, response.code);
             } else {
                 response = new responseMessage.ObjectDoesNotExistInDB();
@@ -399,7 +399,7 @@ module.exports = {
             if(result) {
                 const nearByVendors = JSON.parse(JSON.stringify(result));
                 nearByVendors.forEach(vendor => {
-                    let vendorObj = _.omit(vendor, ['createdBy', '_id', 'otp', 'updatedBy', 'status']);
+                    let vendorObj = _.omit(vendor, ['createdBy', 'otp', 'updatedBy', 'status']);
                     vendorDetails.push(vendorObj);
                 });
                 response = new responseMessage.GenericSuccessMessage();

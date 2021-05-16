@@ -20,6 +20,10 @@ userRouter.get("/details", (req, res) => {
     userController.getUserDetail(req, res);
 });
 
+userRouter.post("/login/google", (req, res) => {
+    userController.loginUserWithGoogle(req, res);
+});
+
 module.exports = {
     userRouter: userRouter
 }
