@@ -9,12 +9,12 @@ const { response } = require("express");
 
 module.exports = {
 
-    insertNewDish: function(req, res) {
+    insertNewDish: function (req, res) {
         dishesService.insertNewDish(req.body, (err, data, statusCode) => {
 
-            if(!err && statusCode === 200 && data.status !== "not_found") {
+            if (!err && statusCode === 200 && data.status !== "not_found") {
                 vendorService.updateVendorDishCount(req.body.vendorId, req.body.createdBy, "increment", (err, vendorData) => {
-                    if(err) {
+                    if (err) {
                         return res.status(err.code).send(err);
                     } else {
                         return res.status(vendorData.code).send(vendorData);
@@ -26,23 +26,23 @@ module.exports = {
         });
     },
 
-    updateDish: function(req, res) {
+    updateDish: function (req, res) {
         dishesService.updateDish(req.body, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });
     },
 
-    updateDishAvailability: function(req, res) {
+    updateDishAvailability: function (req, res) {
         dishesService.updateDishAvailablity(req.body, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });
     },
 
-    deleteDish: function(req, res) {
+    deleteDish: function (req, res) {
         dishesService.deleteDish(req.body, (err, data, statusCode) => {
-            if(!err && statusCode === 200 && data.status !== "not_found") {
+            if (!err && statusCode === 200 && data.status !== "not_found") {
                 vendorService.updateVendorDishCount(data.vendorId, req.body.createdBy, "decrement", (err, vendorData) => {
-                    if(err) {
+                    if (err) {
                         return res.status(err.code).send(err);
                     } else {
                         return res.status(vendorData.code).send(vendorData);
@@ -51,64 +51,64 @@ module.exports = {
             } else {
                 return res.status(statusCode).send(data);
             }
-            
+
         });
     },
 
-    getAllVendorDishes: function(req, res) {
+    getAllVendorDishes: function (req, res) {
         dishesService.getAllVendorDishes(req.query, (err, data, statusCode) => {
             return res.status(statusCode).send(data);
         });
     },
 
-    getDishDetail: function(req, res) {
+    getDishDetail: function (req, res) {
         let response;
         dishesService.getDishDetail(req, (err, dishData, statusCode) => {
-            if(!err && dishData.code === 200 && dishData.status !== "not_found") {
+            if (!err && dishData.code === 200 && dishData.status !== "not_found") {
                 const userId = req.query.uid;
                 const dishDetail = dishData.data;
-                if(userId) {
+                if (userId) {
                     likeService.getUserLikedDishes(req.query.did, userId, (err, likeData) => {
-                        if(!err && likeData.code === 200 && likeData.status !== "not_found") {
+                        if (!err && likeData.code === 200 && likeData.status !== "not_found") {
                             const likeDetail = likeData.data[0];
-                            if(likeDetail.reactionType === likeConfig.reaction.like) {
+                            if (likeDetail.reactionType === likeConfig.reaction.like) {
                                 dishDetail.hasUserLiked = true;
-                                console.log(dishDetail);
-                            } else if(likeDetail.reactionType === likeConfig.reaction.dislike) {
+                            } else if (likeDetail.reactionType === likeConfig.reaction.dislike) {
                                 dishDetail.hasUserDisliked = true;
                             }
                         }
-                        console.log("next", dishDetail);
                         response = new responseMessage.GenericSuccessMessage();
                         response.data = dishDetail;
                         return res.status(response.code).send(response);
                     });
+                } else {
+                    response = new responseMessage.GenericSuccessMessage();
+                    response.data = dishDetail;
+                    return res.status(response.code).send(response);
                 }
-                response = new responseMessage.GenericSuccessMessage();
-                response.data = dishDetail;
-                return res.status(response.code).send(response);
+            } else {
+                return res.status(statusCode).send(dishData);
             }
-            return res.status(statusCode).send(data);
         });
     },
 
-    getAllDishes: function(req, res) {
+    getAllDishes: function (req, res) {
         let response;
         dishesService.getAllDishes(req, (err, dishData, statusCode) => {
-            if(!err && dishData.code === 200 && dishData.status !== "not_found") {
+            if (!err && dishData.code === 200 && dishData.status !== "not_found") {
                 const userId = req.query.uid;
                 const dishesIndex = dishData.data.dishesIndex;
                 let dishDetails = dishData.data.dishDetails;
                 const dishIds = dishData.data.dishIds;
                 let index;
-                if(userId) {
+                if (userId) {
                     likeService.getUserLikedDishes(dishIds, userId, (err, likeData) => {
-                        if(!err && likeData.status !== "not_found" && likeData.code === 200) {
+                        if (!err && likeData.status !== "not_found" && likeData.code === 200) {
                             likeData.data.forEach(element => {
                                 index = dishesIndex[element.flowId];
-                                if(element.reactionType === likeConfig.reaction.like) {
+                                if (element.reactionType === likeConfig.reaction.like) {
                                     dishDetails[index].hasUserLiked = true;
-                                } else if(element.reactionType === likeConfig.reaction.dislike) {
+                                } else if (element.reactionType === likeConfig.reaction.dislike) {
                                     dishDetails[index].hasUserDisliked = true;
                                 }
                             });
@@ -121,13 +121,6 @@ module.exports = {
                         response.data = dishDetails;
                         return res.status(response.code).send(response);
                     });
-                    response = new responseMessage.GenericSuccessMessage();
-                    response.total = dishData.total;
-                    response.limit = dishData.limit;
-                    response.page = dishData.page;
-                    response.pages = dishData.pages;
-                    response.data = dishDetails;
-                    return res.status(response.code).send(response);
                 } else {
                     response = new responseMessage.GenericSuccessMessage();
                     response.total = dishData.total;
