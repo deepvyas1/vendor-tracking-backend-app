@@ -78,6 +78,7 @@ module.exports = {
                                 dishDetail.hasUserDisliked = true;
                             }
                         }
+                        console.log("next", dishDetail);
                         response = new responseMessage.GenericSuccessMessage();
                         response.data = dishDetail;
                         return res.status(response.code).send(response);
