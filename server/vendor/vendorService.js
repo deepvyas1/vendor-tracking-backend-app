@@ -389,7 +389,7 @@ module.exports = {
                 location: {
                     $nearSphere: {
                         $geometry: {type: "Point", coordinates: userLocation},
-                        $maxDistance: 2000
+                        $maxDistance: 6000
                     }
                 }
             };

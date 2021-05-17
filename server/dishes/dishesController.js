@@ -62,7 +62,27 @@ module.exports = {
     },
 
     getDishDetail: function(req, res) {
-        dishesService.getDishDetail(req, (err, data, statusCode) => {
+        let response;
+        dishesService.getDishDetail(req, (err, dishData, statusCode) => {
+            if(!err && dishData.code === 200 && dishData.status !== "not_found") {
+                const userId = req.query.uid;
+                const dishDetail = dishData.data;
+                if(userId) {
+                    likeService.getUserLikedDishes(req.query.did, userId, (err, likeData) => {
+                        if(!err && likeData.code === 200 && likeData.status !== "not_found") {
+                            const likeDetail = likeData.data[0];
+                            if(likeDetail.reactionType === likeConfig.reaction.like) {
+                                likeDetail.hasUserLiked = true;
+                            } else if(likeDetail.reactionType === likeConfig.reaction.dislike) {
+                                likeDetail.hasUserDisliked = true;
+                            }
+                        }
+                    });
+                }
+                response = new responseMessage.GenericSuccessMessage();
+                response.data = dishDetail;
+                return res.status(response.code).send(response);
+            }
             return res.status(statusCode).send(data);
         });
     },

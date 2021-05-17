@@ -277,7 +277,10 @@ module.exports = {
             const result = await Dishes.findOne(query);
             if(result) {
                 response = new responseMessage.GenericSuccessMessage();
-                response.data = result;
+                const dishDetail = JSON.parse(JSON.stringify(result));
+                dishDetail.hasUserDisliked = false;
+                dishDetail.hasUserLiked = false;
+                response.data = dishDetail;
                 return callback(null, response, response.code);
             } else {
                 response = new responseMessage.ObjectDoesNotExistInDB();
