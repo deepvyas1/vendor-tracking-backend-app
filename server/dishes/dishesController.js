@@ -78,6 +78,9 @@ module.exports = {
                                 dishDetail.hasUserDisliked = true;
                             }
                         }
+                        response = new responseMessage.GenericSuccessMessage();
+                        response.data = dishDetail;
+                        return res.status(response.code).send(response);
                     });
                 }
                 response = new responseMessage.GenericSuccessMessage();
@@ -109,6 +112,13 @@ module.exports = {
                                 }
                             });
                         }
+                        response = new responseMessage.GenericSuccessMessage();
+                        response.total = dishData.total;
+                        response.limit = dishData.limit;
+                        response.page = dishData.page;
+                        response.pages = dishData.pages;
+                        response.data = dishDetails;
+                        return res.status(response.code).send(response);
                     });
                     response = new responseMessage.GenericSuccessMessage();
                     response.total = dishData.total;
