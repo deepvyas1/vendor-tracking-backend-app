@@ -68,7 +68,7 @@ module.exports = {
                 const userId = req.query.uid;
                 const dishDetail = dishData.data;
                 if(userId) {
-                    likeService.getUserLikedDishes(req.query.did, userId, (err, likeData) => {
+                    likeService.getUserLikedDishes(req.query.did, userId, (err, likeData) => {console.log(likeData);
                         if(!err && likeData.code === 200 && likeData.status !== "not_found") {
                             const likeDetail = likeData.data[0];
                             if(likeDetail.reactionType === likeConfig.reaction.like) {
