@@ -193,7 +193,7 @@ module.exports = {
             const openingTime = body.openingTime;
             const closingTime = body.closingTime;
 
-            if (!vendorId) {
+            if (!vendorId || !name || !createdBy || !address || !location || !openingTime || !closingTime) {
                 console.log("Missing Info ::: name: " + name + ". createdBy: " + createdBy + ". name: " + name);
                 response = responseMessage.incorrectPayload;
                 return callback(null, response, response.code);
