@@ -71,7 +71,7 @@ module.exports = {
                     likeService.getUserLikedDishes(req.query.did, userId, (err, likeData) => {console.log(likeData);
                         if(!err && likeData.code === 200 && likeData.status !== "not_found") {
                             const likeDetail = likeData.data[0];
-                            if(likeDetail.reactionType === likeConfig.reaction.like) {
+                            if(likeDetail.reactionType === likeConfig.reaction.like) {console.log("Here", likeDetail);
                                 likeDetail.hasUserLiked = true;
                             } else if(likeDetail.reactionType === likeConfig.reaction.dislike) {
                                 likeDetail.hasUserDisliked = true;
