@@ -73,6 +73,7 @@ module.exports = {
                             const likeDetail = likeData.data[0];
                             if(likeDetail.reactionType === likeConfig.reaction.like) {
                                 dishDetail.hasUserLiked = true;
+                                console.log(dishDetail);
                             } else if(likeDetail.reactionType === likeConfig.reaction.dislike) {
                                 dishDetail.hasUserDisliked = true;
                             }
