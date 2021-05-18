@@ -24,7 +24,7 @@ const options = {
   useFindAndModify: false,
   useUnifiedTopology: true,
 };
-mongoose.mainConnection = mongoose.createConnection("mongodb://localhost/vendor", options);
+mongoose.mainConnection = mongoose.createConnection("mongodb+srv://Deep:7223926161dD$@cluster0.jdxff.mongodb.net/vendor?retryWrites=true&w=majority", options);
 
 //------------------------------------------- MAIN DB CONNECTION EVENTS-----------------------------------------------//
 // When successfully connected
