@@ -299,7 +299,9 @@ module.exports = {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
 
-            const query = {};
+            const query = {
+                status: dishesConfig.status.active
+            };
             const options = {
                 page: page,
                 limit: limit,
